@@ -126,6 +126,31 @@ sudo snap remove deepseek-linux
 - **Restore Window**: Click the DeepSeek tray icon or select **Open DeepSeek** from the tray menu.
 - **Exit Completely**: Right-click the DeepSeek tray icon and select **Exit**.
 
+### Navigation & Shortcuts
+
+- **Back**: `Alt + Left Arrow` or right-click -> **Back**
+- **Forward**: `Alt + Right Arrow` or right-click -> **Forward**
+- **Reload**: `Ctrl + R` or `F5` or right-click -> **Reload**
+- **Home**: `Ctrl + H` or right-click -> **Home (DeepSeek)**
+
+---
+
+## ❓ **FAQ & Troubleshooting**
+
+### Why do I see "This browser or app may not be secure" when signing in with Google?
+
+Google blocks OAuth authentication inside all embedded webview applications (including Electron and custom web wrappers) to prevent Man-in-the-Middle credential attacks, as outlined in [Google's embedded browser policy](https://developers.googleblog.com/2021/06/upcoming-security-changes-to-googles-oauth-20-authorization-endpoint.html) (RFC 8252).
+
+#### How to log into your account using Email and Password:
+
+If your DeepSeek account was created with Google, you can easily log in with a password:
+
+1. Open [chat.deepseek.com](https://chat.deepseek.com) in your default web browser (such as Chrome or Firefox).
+2. On the login modal, click **Forgot password?**.
+3. Enter the Gmail address associated with your account.
+4. Check your email for the verification code and set a password.
+5. In the **DeepSeek Desktop** app, enter your Gmail address and the newly created password under **Log in**.
+
 ---
 
 ## 🤝 **Contributing**

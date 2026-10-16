@@ -56,9 +56,14 @@
         "entry": {
           "Name": "DeepSeek",
           "Type": "Application",
+          "Icon": "deepseek-linux",
           "StartupWMClass": "deepseek-linux"
         }
       }
+    },
+    "deb": {
+      "afterInstall": "scripts/after-install.sh",
+      "afterRemove": "scripts/after-remove.sh"
     }
   }
 }
