@@ -1,12 +1,15 @@
 {
   "name": "deepseek-linux",
   "version": "1.0.2",
+  "desktopName": "deepseek-linux",
   "description": "A simple and efficient desktop client for DeepSeek.",
   "main": "src/main.js",
   "type": "module",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --linux snap",
+    "dist:snap": "electron-builder --linux snap",
+    "dist:deb": "electron-builder --linux deb",
+    "generate:icons": "python3 scripts/generate-icons.py",
     "lint": "eslint src/**/*.js",
     "format": "prettier --write \"**/*.{js,json,md}\""
   },
@@ -20,7 +23,10 @@
     "desktop",
     "linux"
   ],
-  "author": "evildevill",
+  "author": {
+    "name": "evildevill",
+    "email": "hackerwasi1@gmail.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/evildevill/deepseek-linux/issues"
@@ -39,9 +45,17 @@
     "productName": "DeepSeek",
     "appId": "com.evildevill.deepseeklinux",
     "linux": {
-      "target": "snap",
-      "icon": "assets/icon.png",
-      "category": "Utility"
+      "target": ["deb", "snap"],
+      "icon": "assets/icons",
+      "category": "Utility",
+      "desktop": {
+        "entry": {
+          "Name": "DeepSeek",
+          "Type": "Application",
+          "StartupWMClass": "deepseek-linux"
+        }
+      }
     }
   }
 }
+

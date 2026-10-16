@@ -9,7 +9,7 @@ const APP_URL = 'https://chat.deepseek.com';
 const DEEPSEEK_PROTOCOL = 'deepseek://';
 const ICON_PATH = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
-  'assets/icon.png'
+  '../assets/icon.png'
 );
 
 // Set up the context menu
