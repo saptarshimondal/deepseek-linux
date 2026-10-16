@@ -7,8 +7,9 @@
   "type": "module",
   "scripts": {
     "start": "electron .",
-    "dist:snap": "electron-builder --linux snap",
-    "dist:deb": "electron-builder --linux deb",
+    "dist:snap": "electron-builder --linux snap --publish never",
+    "dist:deb": "electron-builder --linux deb --publish never",
+    "dist:all": "electron-builder --linux deb snap --publish never",
     "generate:icons": "python3 scripts/generate-icons.py",
     "lint": "eslint src/**/*.js",
     "format": "prettier --write \"**/*.{js,json,md}\""
