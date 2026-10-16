@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.2.1...deepseek-linux-v1.2.2) (2026-10-16)
+
+
+### Bug Fixes
+
+* add context menu navigation, keyboard shortcuts, and Google sign-in guidance ([f4b6a0d](https://github.com/wdeveloper163/deepseek-linux/commit/f4b6a0dbcc789714420caea8cc65b9e3e1943c84))
+* add deb package lifecycle scripts, icon generation utility, and update app icons and configuration ([27b4a8a](https://github.com/wdeveloper163/deepseek-linux/commit/27b4a8aa3d9aacd1cefd70722922e3339cb9bcb5))
+
 ## [1.2.1](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.2.0...deepseek-linux-v1.2.1) (2026-10-16)
 
 
