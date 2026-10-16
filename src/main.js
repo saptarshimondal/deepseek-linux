@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, Menu, Tray, nativeImage, shell } from 'electron';
 import path from 'path';
 import { config } from './config/index.js';
 import { fileURLToPath } from 'url';
@@ -18,6 +18,8 @@ electronContextMenu({
 });
 
 let mainWindow = null;
+let tray = null;
+let isQuitting = false;
 
 /**
  * Handles new window creation, specifically for Google Sign-In popups.
@@ -60,6 +62,65 @@ function createMainWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.maximize();
   });
+
+  // Intercept the close (X) button to hide the window instead of quitting
+  mainWindow.on('close', (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+  });
+}
+
+/**
+ * Creates the system tray icon and context menu.
+ */
+function createTray() {
+  const icon = nativeImage
+    .createFromPath(ICON_PATH)
+    .resize({ width: 24, height: 24 });
+
+  tray = new Tray(icon);
+  tray.setToolTip('DeepSeek');
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Open DeepSeek',
+      click: () => {
+        if (mainWindow) {
+          if (mainWindow.isMinimized()) {
+            mainWindow.restore();
+          }
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      },
+    },
+    { type: 'separator' },
+    {
+      label: 'Exit',
+      click: () => {
+        isQuitting = true;
+        app.quit();
+      },
+    },
+  ]);
+
+  tray.setContextMenu(contextMenu);
+
+  // Toggle/show window on tray icon click
+  tray.on('click', () => {
+    if (!mainWindow) return;
+    if (mainWindow.isVisible() && mainWindow.isFocused()) {
+      mainWindow.hide();
+    } else {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
 }
 
 /**
@@ -99,6 +160,9 @@ function handleSecondInstance(event, args) {
     if (mainWindow.isMinimized()) {
       mainWindow.restore();
     }
+    if (!mainWindow.isVisible()) {
+      mainWindow.show();
+    }
     mainWindow.focus();
   }
 }
@@ -117,25 +181,34 @@ async function initializeApp() {
     return;
   }
 
+  // Set isQuitting flag before quitting so window.close handler allows termination
+  app.on('before-quit', () => {
+    isQuitting = true;
+  });
+
   // Wait for app to be ready
   await app.whenReady();
 
-  // Create the main window
+  // Create the main window and system tray icon
   createMainWindow();
+  createTray();
 
   // Handle second instance
   app.on('second-instance', handleSecondInstance);
 
-  // Handle window all closed
+  // Keep app running in the background/tray when all windows are closed/hidden
   app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    if (isQuitting) {
       app.quit();
     }
   });
 
   // Handle activate (macOS)
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+    if (mainWindow) {
+      mainWindow.show();
+      mainWindow.focus();
+    } else {
       createMainWindow();
     }
   });
