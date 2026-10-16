@@ -1,6 +1,6 @@
 {
   "name": "deepseek-linux",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "desktopName": "deepseek-linux",
   "description": "A simple and efficient desktop client for DeepSeek.",
   "main": "src/main.js",
@@ -46,7 +46,10 @@
     "productName": "DeepSeek",
     "appId": "com.evildevill.deepseeklinux",
     "linux": {
-      "target": ["deb", "snap"],
+      "target": [
+        "deb",
+        "snap"
+      ],
       "icon": "assets/icons",
       "category": "Utility",
       "desktop": {
