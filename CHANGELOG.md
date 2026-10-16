@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.1.0...deepseek-linux-v1.2.0) (2026-10-16)
+
+
+### Features
+
+* add SNAP package build and upload support to release workflow ([c81b571](https://github.com/wdeveloper163/deepseek-linux/commit/c81b571276bde1e56b3a417594249a87c8f0a8a0))
+
 ## [1.1.0](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.0.2...deepseek-linux-v1.1.0) (2026-10-16)
 
 
