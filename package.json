@@ -1,6 +1,6 @@
 {
   "name": "deepseek-linux",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "desktopName": "deepseek-linux",
   "description": "A simple and efficient desktop client for DeepSeek.",
   "main": "src/main.js",
