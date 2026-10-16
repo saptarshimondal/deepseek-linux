@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evildevill/deepseek-linux.git"
+    "url": "git+https://github.com/wdeveloper163/deepseek-linux.git"
   },
   "keywords": [
     "electron",
@@ -25,14 +25,14 @@
     "linux"
   ],
   "author": {
-    "name": "evildevill",
-    "email": "hackerwasi1@gmail.com"
+    "name": "wdeveloper163",
+    "email": "wdeveloper163@gmail.com"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/evildevill/deepseek-linux/issues"
+    "url": "https://github.com/wdeveloper163/deepseek-linux/issues"
   },
-  "homepage": "https://github.com/evildevill/deepseek-linux#readme",
+  "homepage": "https://github.com/wdeveloper163/deepseek-linux#readme",
   "dependencies": {
     "electron-context-menu": "^4.1.1"
   },
@@ -44,7 +44,7 @@
   },
   "build": {
     "productName": "DeepSeek",
-    "appId": "com.evildevill.deepseeklinux",
+    "appId": "com.wdeveloper163.deepseeklinux",
     "linux": {
       "target": [
         "deb",
