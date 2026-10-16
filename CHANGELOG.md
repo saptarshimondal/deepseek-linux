@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.2.0...deepseek-linux-v1.2.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* system tray support and minimize-to-tray functionality ([ab62196](https://github.com/wdeveloper163/deepseek-linux/commit/ab62196f5d2b826de063cf8dda3d030505e340f9))
+
 ## [1.2.0](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.1.0...deepseek-linux-v1.2.0) (2026-10-16)
 
 
