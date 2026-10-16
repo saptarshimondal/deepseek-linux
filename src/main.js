@@ -1,4 +1,13 @@
-import { app, BrowserWindow, Menu, Tray, nativeImage, shell } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  Menu,
+  Tray,
+  nativeImage,
+  shell,
+  dialog,
+  session,
+} from 'electron';
 import path from 'path';
 import { config } from './config/index.js';
 import { fileURLToPath } from 'url';
@@ -12,9 +21,33 @@ const ICON_PATH = path.join(
   '../assets/icon.png'
 );
 
-// Set up the context menu
+// Set default fallback user agent to standard browser UA
+app.userAgentFallback = config.userAgent;
+
+// Set up the context menu with navigation controls
 electronContextMenu({
   showSaveImageAs: true,
+  append: (defaultActions, parameters, browserWindow) => [
+    {
+      label: 'Back',
+      visible: Boolean(browserWindow?.webContents?.canGoBack?.()),
+      click: () => browserWindow?.webContents?.goBack?.(),
+    },
+    {
+      label: 'Forward',
+      visible: Boolean(browserWindow?.webContents?.canGoForward?.()),
+      click: () => browserWindow?.webContents?.goForward?.(),
+    },
+    {
+      label: 'Reload',
+      click: () => browserWindow?.webContents?.reload?.(),
+    },
+    {
+      label: 'Home (DeepSeek)',
+      click: () =>
+        browserWindow?.loadURL?.(APP_URL, { userAgent: config.userAgent }),
+    },
+  ],
 });
 
 let mainWindow = null;
@@ -22,15 +55,59 @@ let tray = null;
 let isQuitting = false;
 
 /**
- * Handles new window creation, specifically for Google Sign-In popups.
+ * Shows an informative dialog explaining Google's OAuth policy on desktop webviews
+ * and guides the user on how to sign in.
+ * @param {BrowserWindow} targetWindow - The window to attach the dialog to.
+ */
+function showGoogleSignInNotice(targetWindow) {
+  dialog
+    .showMessageBox(targetWindow, {
+      type: 'info',
+      title: 'Google Sign-In Restricted',
+      message: 'Google Sign-In is blocked in embedded desktop applications.',
+      detail:
+        'Google restricts OAuth logins inside desktop webviews due to security policies (RFC 8252).\n\n' +
+        'How to log in to your account:\n' +
+        '1. Use your Email and Password on the login screen.\n' +
+        '2. If you originally registered using "Continue with Google", click "Forgot password?" on DeepSeek to set a password for your Gmail address.\n\n' +
+        'Once set, you can log in directly using your email and password.',
+      buttons: ['OK', 'Open DeepSeek in Browser'],
+      defaultId: 0,
+      cancelId: 0,
+    })
+    .then(({ response }) => {
+      if (response === 1) {
+        shell.openExternal(APP_URL);
+      }
+    })
+    .catch(console.error);
+}
+
+/**
+ * Handles new window creation requests.
  * @param {Object} details - Details about the new window.
  * @returns {Object} Action to take.
  */
 function handleNewWindow(details) {
-  if (details.url.includes('accounts.google.com')) {
+  if (
+    details.url.includes('accounts.google.com') ||
+    details.url.includes('/oauth/google/authorize')
+  ) {
+    if (mainWindow) {
+      showGoogleSignInNotice(mainWindow);
+    }
+    return { action: 'deny' };
+  }
+
+  // Open external links (such as policy docs, external sites) in the default system browser
+  if (
+    !details.url.startsWith(APP_URL) &&
+    (details.url.startsWith('https://') || details.url.startsWith('http://'))
+  ) {
     shell.openExternal(details.url);
     return { action: 'deny' };
   }
+
   return { action: 'allow' };
 }
 
@@ -44,7 +121,6 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      nativeWindowOpen: true,
       preload: path.join(
         path.dirname(fileURLToPath(import.meta.url)),
         'preload.js'
@@ -58,6 +134,53 @@ function createMainWindow() {
   });
 
   mainWindow.webContents.setWindowOpenHandler(handleNewWindow);
+
+  // Intercept in-page navigation to Google OAuth to prevent getting stuck on Google's error page
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (
+      url.includes('accounts.google.com') ||
+      url.includes('/oauth/google/authorize')
+    ) {
+      event.preventDefault();
+      showGoogleSignInNotice(mainWindow);
+    }
+  });
+
+  // Keyboard navigation shortcuts
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.type !== 'keyDown') return;
+
+    // Alt + Left: Navigate Back
+    if (input.alt && input.key === 'ArrowLeft') {
+      if (mainWindow.webContents.canGoBack()) {
+        event.preventDefault();
+        mainWindow.webContents.goBack();
+      }
+    }
+
+    // Alt + Right: Navigate Forward
+    if (input.alt && input.key === 'ArrowRight') {
+      if (mainWindow.webContents.canGoForward()) {
+        event.preventDefault();
+        mainWindow.webContents.goForward();
+      }
+    }
+
+    // Ctrl + R or F5: Reload
+    if (
+      (input.control && input.key.toLowerCase() === 'r') ||
+      input.key === 'F5'
+    ) {
+      event.preventDefault();
+      mainWindow.webContents.reload();
+    }
+
+    // Ctrl + H: Go to DeepSeek Home
+    if (input.control && input.key.toLowerCase() === 'h') {
+      event.preventDefault();
+      mainWindow.loadURL(APP_URL, { userAgent: config.userAgent });
+    }
+  });
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.maximize();
@@ -188,6 +311,9 @@ async function initializeApp() {
 
   // Wait for app to be ready
   await app.whenReady();
+
+  // Set default session User-Agent to match configured browser UA
+  session.defaultSession.setUserAgent(config.userAgent);
 
   // Create the main window and system tray icon
   createMainWindow();
