@@ -1,94 +1,146 @@
 # DeepSeek Desktop
 
-DeepSeek Desktop is a cross-platform desktop application that allows you to use DeepSeek directly on your computer, making it easier to chat with AI while working.
+<p align="center">
+  <img src="./assets/icon.png" alt="DeepSeek Desktop" width="128" height="128" />
+</p>
 
-[![Get it from the Snap Store](https://snapcraft.io/en/dark/install.svg)](https://snapcraft.io/deepseek-linux)
+DeepSeek Desktop is an unofficial, lightweight desktop application for DeepSeek AI, providing a seamless and responsive desktop experience on Linux distributions.
 
-![Image](./assets/banner.png)
+---
 
 ## 🛠 **Features**
 
-DeepSeek Desktop is a lightweight, Electron-based application that brings the power of DeepSeek to your desktop. It provides a seamless and responsive interface for AI-driven conversations. Key features include:
+- **DeepSeek Chat**: Fast and direct access to [chat.deepseek.com](https://chat.deepseek.com) inside a dedicated desktop window.
+- **System Tray Integration**: Runs unobtrusively in the background with an icon in the system tray / notification area.
+- **Close to Tray**: Clicking the window's close (`X`) button hides the application to the background rather than terminating your session.
+- **Start Menu & Desktop Integration**: Full integration with Linux desktop environments (Linux Mint Cinnamon, MATE, GNOME, XFCE, KDE) with standard high-resolution icons.
+- **Single Instance**: Running `deepseek-linux` or opening a link restores and focuses the active window.
+- **Secure**: Direct HTTPS communication with DeepSeek, keeping your credentials and conversations private.
+- **Open Source**: Built with Electron.
 
-1. **Anonymous Chatting**: Enjoy secure and private interactions without the need for an account.
-2. **Secure**: All communications are encrypted, ensuring your data remains private and safe.
-3. **Open Source**: The application is open-source, allowing users to contribute and modify the code for their needs.
-4. **Cross-Platform**: Available on multiple platforms, ensuring smooth performance and a consistent experience.
-5. **DeepSeek Chat**: Access DeepSeek quickly from a dedicated desktop window.
-
-Designed for both casual chats and productivity, DeepSeek Desktop offers an easy and secure way to interact with AI on your desktop.
+---
 
 ## 📦 **Installation**
 
-```bash
-sudo snap install deepseek-linux
-```
+Pre-built binaries for **`.deb`** and **`.snap`** are available on the [GitHub Releases](https://github.com/evildevill/deepseek-linux/releases) page.
 
-### Build From Source
+### Option 1: Install DEB Package (Debian, Ubuntu, Linux Mint, etc.)
+
+1. Download the latest `.deb` package from [Releases](https://github.com/evildevill/deepseek-linux/releases).
+2. Install via terminal:
+   ```bash
+   sudo dpkg -i deepseek-linux_*_amd64.deb
+   sudo apt-get install -f # Fix any missing dependencies if needed
+   ```
+   _Or install using `apt`:_
+   ```bash
+   sudo apt install ./deepseek-linux_*_amd64.deb
+   ```
+
+### Option 2: Install SNAP Package
+
+1. Download the latest `.snap` package from [Releases](https://github.com/evildevill/deepseek-linux/releases).
+2. Install via terminal:
+   ```bash
+   sudo snap install --dangerous ./deepseek-linux_*_amd64.snap
+   ```
+
+---
+
+## 🔨 **Build From Source**
+
+### Prerequisites
+
+- Node.js (LTS recommended, v20+)
+- npm
+
+### Steps
 
 1. **Clone the repository**:
 
+   ```bash
+   git clone https://github.com/evildevill/deepseek-linux.git
+   cd deepseek-linux
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Start in development mode**:
+
+   ```bash
+   npm start
+   ```
+
+4. **Build release packages**:
+
+   ```bash
+   # Build DEB package only
+   npm run dist:deb
+
+   # Build SNAP package only
+   npm run dist:snap
+
+   # Build both DEB and SNAP packages
+   npm run dist:all
+   ```
+
+   The compiled packages will be placed in the `dist/` directory:
+   - `dist/deepseek-linux_*_amd64.deb`
+   - `dist/deepseek-linux_*_amd64.snap`
+
+---
+
+## ↩️ **Uninstallation**
+
+### For DEB Package
+
 ```bash
-git clone https://github.com/evildevill/deepseek-linux.git
-cd deepseek-linux
+sudo apt remove deepseek-linux
 ```
 
-2. **Install dependencies**: Ensure that you have all the necessary dependencies installed.
-
-```bash
-   npm instal
-```
-
-3. Start the application:
-
-```bash
-npm start
-```
-
-4. **Build the application**: Run the following command to create a Snap package of the application.
-
-```bash
-npm run dist
-```
-
-5. **Change to the dist directory**: Navigate to the dist directory where the Snap package is located.
-
-```bash
-cd dist
-```
-
-6. **Install the Snap package**: Use the following command to install the Snap package. The `--dangerous` flag allows the installation of locally built packages.
-
-```bash
-sudo snap install --dangerous ./deepseek-linux_1.0.0_amd64.snap
-```
-
-## ↩️ **Uninstallation Steps**
-
-Remove the Snap package: To uninstall the DeepSeek Desktop application, run the following command:
+### For SNAP Package
 
 ```bash
 sudo snap remove deepseek-linux
 ```
 
+---
+
 ## 📖 **Usage Instructions**
 
-### **Launching the App**:
+### Launching the Application
 
-After installation, open DeepSeek Desktop using:
+- Launch from your desktop's application / start menu (search for **DeepSeek**).
+- Or run in terminal:
+  ```bash
+  deepseek-linux
+  ```
 
-```bash
-   deepseek-linux
-```
+### System Tray & Background Controls
+
+- **Hide Window**: Click the window's close (`X`) button to hide the window to the system tray while keeping the app active in the background.
+- **Restore Window**: Click the DeepSeek tray icon or select **Open DeepSeek** from the tray menu.
+- **Exit Completely**: Right-click the DeepSeek tray icon and select **Exit**.
+
+---
 
 ## 🤝 **Contributing**
 
 Contributions are welcome! If you'd like to contribute to this project, please fork the repository and submit a pull request.
 
+---
+
 ## 📜 **License**
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
+---
+
 ## Acknowledgments
 
-- **Electron** - Framework used to build the application.
+- **DeepSeek** - [chat.deepseek.com](https://chat.deepseek.com)
+- **Electron** - Cross-platform desktop application framework.
