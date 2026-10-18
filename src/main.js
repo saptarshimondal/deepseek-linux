@@ -29,6 +29,10 @@ electronContextMenu({
   showSaveImageAs: true,
   append: (defaultActions, parameters, browserWindow) => [
     {
+      label: 'Find in Conversation (Ctrl+F)',
+      click: () => browserWindow?.webContents?.send?.('dsl-find:toggle'),
+    },
+    {
       label: 'Back',
       visible: Boolean(browserWindow?.webContents?.canGoBack?.()),
       click: () => browserWindow?.webContents?.goBack?.(),
@@ -180,6 +184,32 @@ function createMainWindow() {
       event.preventDefault();
       mainWindow.loadURL(APP_URL, { userAgent: config.userAgent });
     }
+
+    // Ctrl + F: Open the in-conversation find bar
+    if (input.control && !input.alt && input.key.toLowerCase() === 'f') {
+      event.preventDefault();
+      mainWindow.webContents.send('dsl-find:toggle');
+    }
+
+    // F3 / Ctrl + G (Shift for previous): Step through find matches
+    if (
+      input.key === 'F3' ||
+      (input.control && !input.alt && input.key.toLowerCase() === 'g')
+    ) {
+      event.preventDefault();
+      mainWindow.webContents.send('dsl-find:step', { forward: !input.shift });
+    }
+  });
+
+  // Close the in-conversation find bar whenever the page navigates
+  const sendFindReset = () => {
+    if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.webContents.isDestroyed()) {
+      mainWindow.webContents.send('dsl-find:reset');
+    }
+  };
+  mainWindow.webContents.on('did-navigate', sendFindReset);
+  mainWindow.webContents.on('did-navigate-in-page', (event, url, isMainFrame) => {
+    if (isMainFrame) sendFindReset();
   });
 
   mainWindow.once('ready-to-show', () => {
