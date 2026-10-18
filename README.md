@@ -132,6 +132,9 @@ sudo snap remove deepseek-linux
 - **Forward**: `Alt + Right Arrow` or right-click -> **Forward**
 - **Reload**: `Ctrl + R` or `F5` or right-click -> **Reload**
 - **Home**: `Ctrl + H` or right-click -> **Home (DeepSeek)**
+- **Find in Conversation**: `Ctrl + F` or right-click -> **Find in Conversation (Ctrl+F)**
+- **Next / Previous Match**: `Enter` / `Shift + Enter` in the find bar (or `F3` / `Shift + F3`, `Ctrl + G` / `Ctrl + Shift + G` while it is open)
+- **Close Find Bar**: `Esc` (highlights are cleared and your previous focus is restored)
 
 ---
 
