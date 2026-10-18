@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.2.2...deepseek-linux-v1.3.0) (2026-10-18)
+
+
+### Features
+
+* add in-conversation search (Ctrl+F) ([a20317d](https://github.com/wdeveloper163/deepseek-linux/commit/a20317dfb020d847ee265372f85d2c044f72c942))
+* add in-conversation search (Ctrl+F) ([6d6b7d6](https://github.com/wdeveloper163/deepseek-linux/commit/6d6b7d68274701c104c72a41893359075f6c8a6d))
+
 ## [1.2.2](https://github.com/wdeveloper163/deepseek-linux/compare/deepseek-linux-v1.2.1...deepseek-linux-v1.2.2) (2026-10-16)
 
 
